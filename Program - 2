@@ -1,0 +1,73 @@
+HTML Code : 
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Program - 1</title>
+        <meta charset="UTF-8"/>
+        <meta name="Program1" content="Weather View App"/>
+        <style>
+            #link{
+                visibility: hidden;
+                font-size: 30px;
+                color: green;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <form action="http://localhost:8089/DeviServletApplication/htmlServlet" method="get">
+                User Name : <input type="text" name="userName"/><br/><br/>
+                Make your Choice : <input type="radio" name="radio" value="Yes" onclick="moveOn()"/>I want to see
+                <input type="radio" name="radio" value="No"/>Later I can see<br/><br/>
+                <a href="http://localhost:8089/DeviServletApplication/htmlServlet" id="link">Go</a>
+            </form>
+        </div>
+        <script>
+            function moveOn(){
+                var link = document.getElementById("link");
+                link.style.visibility = 'visible';
+            }
+            function dontMove(){
+                var rValue = document.getElementsByName("radio").value;
+                link.style.visibility = 'hidden';
+            }
+        </script>
+    </body>
+</html>
+
+JSP Code : 
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.io.,java.util."%>
+<%@page import="jakarta.servlet.http.,jakarta.servlet."%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Welcome Page</title>
+    </head>
+    <body>
+        <%
+            Cookie[] ck = request.getCookies();
+            if(ck != null && ck.length > 1){
+                String userName = null;
+                String email = null;
+                for(Cookie cookie : ck){
+                    if(cookie.getName().equals("Username"))
+                        userName = cookie.getValue();
+                    else if(cookie.getName().equals("Email"))
+                        email = cookie.getValue();
+                }
+            if(userName != null && email != null){
+        %>
+        <h1>Hello <%= userName%></h1>
+        <h1>Your email is <%= email%></h1>
+        <%
+            }else
+                out.println("<h1>Username and Email is not found</h1>");
+            }else
+                out.println("<h1>No cookies found<h1>");
+        %>
+    </body>
+</html>
